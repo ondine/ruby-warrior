@@ -2,18 +2,37 @@
 
 This is a game designed to teach the Ruby language and artificial intelligence in a fun, interactive way.
 
-You play as a warrior climbing a tall tower to reach the precious Ruby at the top level. On each floor you need to write a Ruby script to instruct the warrior to battle enemies, rescue captives, and reach the stairs. You have some idea of what each floor contains, but you never know for certain what will happen. You must give the Warrior enough artificial intelligence up-front to find his own way.
+You play as a warrior climbing a tall tower to reach the precious Ruby at the top level. On each floor you need to write a Ruby script to instruct the warrior to battle enemies, rescue captives, and reach the stairs. You have some idea of what each floor contains, but you never know for certain what will happen. You must give the Warrior enough artificial intelligence up-front to find her own way.
 
 NOTE: The player directory structure changed on July 18, 2009. If you have an old profile using the "level-00*" structure then move the contents of the last level into the parent directory.
 
 
 == Getting Started
 
-First install the gem.
+First, fork this "ruby-warrior" repository, and then clone it to your machine.
+To fork this project, click the "Fork" button (upper right hand corner) in the GitHub.com repository.
+
+  Watch Star Fork [add image file Fork.png here]
+  
+Congratulations! You've successfully forked the "ruby-warrior" repository, but so far it only exists on your GitHub account as a forked repo. To be able to work on the project, you will need to clone it to your local machine.
+
+To clone your fork, run the following code:
+
+  git clone https://github.com/username/ruby-warrior.git
+
+Install the rubywarrior gem.
 
   gem install rubywarrior
 
-Then run the "rubywarrior" command to setup your profile. This will create a rubywarrior directory in your current location where you will find a player.rb file in your profile's directory containing this:
+Then run the "rubywarrior" command to setup your profile. 
+
+  Welcome to Ruby Warrior
+    [1] playername - beginner - level 1 - score 0
+    [2] playername - intermediate - level 2 - score 0
+  Choose profile by typing the number:
+
+This will create a rubywarrior directory in your current location. For example if you chose the beginner level, in the 'playername - beginner' directory you will see two files: A player.rb file and a README file. 
+The player.rb file contains the following code:
 
   class Player
     def play_turn(warrior)
@@ -21,9 +40,17 @@ Then run the "rubywarrior" command to setup your profile. This will create a rub
     end
   end
 
-Your objective is to fill this "play_turn" method with commands to instruct the warrior what to do. With each level your abilities will grow along with the difficulty. See the README in your profile's directory for details on what abilities your warrior has available on the current level.
+Your objective is to fill this "play_turn" method with commands to instruct the warrior what to do. With each level your abilities will grow along with the difficulty. Now, open the README for details on what abilities your warrior has available on the current level.
 
-Here is a simple example which will instruct the warrior to attack if he feels an enemy, otherwise he will walk forward.
+Here is a simple example which will instruct the warrior to walk:
+
+  class Player
+    def play_turn(warrior)
+      warrior.walk!
+    end
+  end
+
+In this example, the warrior is instructed to attack if she feels an enemy, otherwise the warrior will walk forward.
 
   class Player
     def play_turn(warrior)
@@ -35,32 +62,17 @@ Here is a simple example which will instruct the warrior to attack if he feels a
     end
   end
 
-Once you are done editing player.rb, save the file and run the "rubywarrior" command again to start playing the level. The play happens through a series of turns. On each one, your "play_turn" method is called along with any enemy's.
+Once you are done editing player.rb, save the file and run the "rubywarrior" command again from the rubywarrior-ai directory to start playing the level. The play happens through a series of turns. On each one, your "play_turn" method is called along with any enemy's.
 
 You cannot change your code in the middle of a level. You must take into account everything that may happen on that level and give your warrior the proper instructions from the start.
 
 Losing all of your health will cause you to fail the level. You are not punished by this, you simply need to go back to your player.rb, improve your code, and try again.
 
-Once you pass a level (by reaching the stairs), the profile README will be updated for the next level. Alter the player.rb file and run rubywarrior again to play the next level.
-
-
-== Scoring
-
-Your objective is to not only reach the stairs, but to get the highest score you can. There are many ways you can earn points on a level.
-
-* defeat an enemy to add his max health to your score
-* rescue a captive to earn 20 points
-* pass the level within the bonus time to earn the amount of bonus time remaining
-* defeat all enemies and rescue all captives to receive a 20% overall bonus
-
-A total score is kept as you progress through the levels. When you pass a level, that score is added to your total.
-
-Don't be too concerned about scoring perfectly in the beginning. After you reach the top of the tower you will be able to re-run the tower and fine-tune your warrior to get the highest score. See the Epic Mode below for details.
-
+Once you pass a level (by reaching the stairs), the profile README will be automagically be updated for the next level. Alter the player.rb file and run rubywarrior again to play the next level.
 
 == Perspective
 
-Even though this is a text-based game, think of it as two-dimensional where you are viewing from overhead. Each level is always rectangular in shape and is made up of a number of squares. Only one unit can be on a given square at a time, and your objective is to find the square with the stairs. Here is an example level map and key.
+Even though this is a text-based game, think of it as two-dimensional where you are viewing from overhead. Each level is always rectangular in shape and is made up of a number of squares. Only one unit can be on a given square at a time, and your goal is to find the square with the stairs. Here is an example level map and key.
 
    ----
   |C s>|
@@ -73,13 +85,15 @@ Even though this is a text-based game, think of it as two-dimensional where you 
   s = Sludge (12 HP)
   S = Thick Sludge (24 HP)
   C = Captive (1 HP)
-
-
+  
 == Commanding the Warrior
 
 When you first start, your warrior will only have a few abilities, but with each level your abilities will grow. A warrior has two kinds of abilities: actions and senses.
 
-An action is something that effects the game in some way. You can easily tell an action because it ends in an exclamation mark. Only one action can be performed per turn, so choose wisely. Here are some examples of actions.
+An action is something that effects the game in some way. 
+A sense is something which gathers information about the floor.
+
+ACTIONS: You can easily tell an action because it ends in an exclamation mark. Only one action can be performed per turn, so choose wisely. Here are some examples of actions!
 
   warrior.walk!
     Move in given direction (forward by default).
@@ -97,7 +111,7 @@ An action is something that effects the game in some way. You can easily tell an
     Rescue a captive from his chains (earning 50 points) in given direction (forward by default).
 
 
-A sense is something which gathers information about the floor. You can perform senses as often as you want per turn to gather information about your surroundings and to aid you in choosing the proper action. Senses do NOT end in an exclamation mark.
+SENSES: You can perform senses as often as you want per turn to gather information about your surroundings and to aid you in choosing the proper action. Senses do NOT end in an exclamation mark.
 
   warrior.feel
     Returns a Space for the given direction (forward by default).
@@ -143,6 +157,19 @@ Whenever you sense an area, often one or multiple spaces (in an array) will be r
 You will often call these methods directly after a sense. For example, the "feel" sense returns one space. You can call "captive?" on this to determine if a captive is in front of you.
 
   warrior.feel.captive?
+  
+== Objective = High Score
+
+Your objective is to not only to reach the stairs, but to get the highest score you can. There are many ways you can earn points on a level.
+
+* defeat an enemy to add his max health to your score
+* rescue a captive to earn 20 points
+* pass the level within the bonus time to earn the amount of bonus time remaining
+* defeat all enemies and rescue all captives to receive a 20% overall bonus
+
+A total score is kept as you progress through the levels. When you pass a level, that score is added to your total.
+
+Don't be too concerned about scoring perfectly in the beginning. After you reach the top of the tower you will be able to re-run the tower and fine-tune your warrior to get the highest score. See the Epic Mode below for details.
 
 
 == Golem
